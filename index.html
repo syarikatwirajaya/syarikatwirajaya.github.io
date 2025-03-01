@@ -317,36 +317,73 @@
           </div>
 
           <div class="col-lg-7">
-            <form action="https://formspree.io/f/mldgqlbe" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="500">
-              <div class="row gy-4">
+    <form id="contact-form" action="https://formspree.io/f/mldgqlbe" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="500">
+        <div class="row gy-4">
 
-                <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                </div>
+            <div class="col-md-6">
+                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+            </div>
 
-                <div class="col-md-6 ">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                </div>
+            <div class="col-md-6">
+                <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+            </div>
 
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                </div>
+            <div class="col-md-12">
+                <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+            </div>
 
-                <div class="col-md-12">
-                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                </div>
+            <div class="col-md-12">
+                <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+            </div>
 
-                <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
+            <div class="col-md-12 text-center">
+                <div class="loading" style="display: none;">Loading...</div>
+                <div class="error-message" style="display: none; color: red;"></div>
+                <div class="sent-message" style="display: none; color: green;">Your message has been sent. Thank you!</div>
 
-                  <button type="submit">Send Message</button>
-                </div>
+                <button type="submit">Send Message</button>
+            </div>
 
-              </div>
-            </form>
-          </div><!-- End Contact Form -->
+        </div>
+    </form>
+</div><!-- End Contact Form -->
+
+<script>
+    document.getElementById("contact-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Halang redirect
+
+        var form = this;
+        var formData = new FormData(form);
+        var loading = document.querySelector(".loading");
+        var successMsg = document.querySelector(".sent-message");
+        var errorMsg = document.querySelector(".error-message");
+
+        // Tunjukkan loading
+        loading.style.display = "block";
+        successMsg.style.display = "none";
+        errorMsg.style.display = "none";
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: { "Accept": "application/json" }
+        }).then(function(response) {
+            loading.style.display = "none";
+            if (response.ok) {
+                successMsg.style.display = "block";
+                form.reset(); // Kosongkan borang selepas berjaya hantar
+            } else {
+                errorMsg.textContent = "Oops! Something went wrong. Please try again.";
+                errorMsg.style.display = "block";
+            }
+        }).catch(function(error) {
+            loading.style.display = "none";
+            errorMsg.textContent = "Error: " + error;
+            errorMsg.style.display = "block";
+        });
+    });
+</script>
+
 
         </div>
 
