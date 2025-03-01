@@ -350,7 +350,7 @@
 
 <script>
     document.getElementById("contact-form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Halang redirect
+        event.preventDefault(); // Halang redirect Formspree
 
         var form = this;
         var formData = new FormData(form);
@@ -367,9 +367,10 @@
             method: form.method,
             body: formData,
             headers: { "Accept": "application/json" }
-        }).then(function(response) {
+        }).then(response => response.json()) // Parse JSON untuk elak redirect
+        .then(function(data) {
             loading.style.display = "none";
-            if (response.ok) {
+            if (data.ok) { // Pastikan status "ok" adalah true
                 successMsg.style.display = "block";
                 form.reset(); // Kosongkan borang selepas berjaya hantar
             } else {
@@ -383,6 +384,7 @@
         });
     });
 </script>
+
 
 
         </div>
